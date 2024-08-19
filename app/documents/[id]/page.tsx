@@ -1,10 +1,14 @@
-import React from "react";
-import EditorForm from "../_components/EditorForm";
 import Editor from "@/components/Editor";
-import { ArrowLeft, SendToBackIcon } from "lucide-react";
+import { createClient } from "@/utils/supabase/server";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-const page = ({ params: { id } }: { params: { id: string } }) => {
+const page = async ({ params: { id } }: { params: { id: string } }) => {
+  const supabase = createClient();
+  const { data } = await supabase.from("documents").select();
+  if (!data) return null;
+  const document = data[0].content;
+
   return (
     <>
       <div className='absolute top-6 left-8'>
@@ -18,7 +22,7 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
       </div>
       <div className='my-2 flex flex-col w-full h-full items-center justify-center'>
         <h1 className='text-lg text-pretty'>{id}</h1>
-        <Editor document={id} />
+        <Editor content={document} />
       </div>
     </>
   );
