@@ -29,7 +29,7 @@ const Toolbar = ({ editor }: Props) => {
   }
 
   return (
-    <div className='border border-input bg-transparent rounded-br-none'>
+    <div className='flex gap-2 mt-4 border border-input bg-transparent rounded-br-none'>
       {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Toggle size={"sm"}>
