@@ -22,9 +22,11 @@ const editorFormSchema = z.object({
 
 type EditorFormValues = z.infer<typeof editorFormSchema>;
 
-type Props = {};
+type Props = {
+  document: string;
+};
 
-const EditorForm = (props: Props) => {
+const EditorForm = ({ document }: Props) => {
   const form = useForm<EditorFormValues>({
     resolver: zodResolver(editorFormSchema),
     defaultValues: { title: "", content: "" },
@@ -36,7 +38,7 @@ const EditorForm = (props: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
         <FormField
           control={form.control}
           name='title'
@@ -56,7 +58,7 @@ const EditorForm = (props: Props) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Editor content={field.value} onChange={field.onChange} />
+                <Editor content={field.value} onChange={field.onChange} document={document} />
               </FormControl>
               <FormMessage />
             </FormItem>
