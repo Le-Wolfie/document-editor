@@ -16,7 +16,8 @@ const page = ({ params: { id } }: { params: { id: string } }) => {
           <span>Back</span>
         </Link>
       </div>
-      <div className='flex flex-col w-full h-full items-center justify-center'>
+      <div className='my-2 flex flex-col w-full h-full items-center justify-center'>
+        <h1 className='text-lg text-pretty'>{id}</h1>
         <Editor document={id} />
       </div>
     </>
