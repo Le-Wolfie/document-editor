@@ -2,25 +2,40 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Heading from "@tiptap/extension-heading";
 import Toolbar from "./Toolbar";
+import * as Y from "yjs";
+import Collaboration from "@tiptap/extension-collaboration";
+import { useEffect } from "react";
+import { TiptapCollabProvider } from "@hocuspocus/provider";
+
+const APP_ID = process.env.NEXT_PUBLIC_TIPTAP_APP_ID as string;
+const TOKEN = process.env.NEXT_PUBLIC_JWT_TOKEN as string;
 
 export default function Editor({
   content,
   onChange,
+  document,
 }: {
   content: string;
   onChange: (content: string) => void;
+  document: string;
 }) {
+  const doc = new Y.Doc(); // Initialize Y.Doc for shared editing
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit.configure({
+        history: false, // Disable history for collaboration
+      }),
+      Collaboration.configure({
+        document: doc, // Configure Y.Doc for collaboration
+      }),
+    ],
     immediatelyRender: false,
     content: content,
     editorProps: {
       attributes: {
-        // prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc
         class:
-          "prose prose-lg focus:outline-none p-4 border border-gray-300 rounded shadow-sm min-h-[500px] min-w-[500px]",
+          "prose prose-lg focus:outline-none p-4 border border-gray-300 rounded shadow-sm min-h-[1000px] min-w-[1000px] [&_ol]:list-decimal [&_ul]:list-disc",
       },
     },
     onUpdate({ editor }) {
@@ -29,10 +44,30 @@ export default function Editor({
     },
   });
 
+  // Connect to your Collaboration server
+  useEffect(() => {
+    const provider = new TiptapCollabProvider({
+      name: document, // Unique document identifier for syncing. This is your document name.
+      appId: APP_ID, // Your Cloud Dashboard AppID or `baseURL` for on-premises
+      token: TOKEN, // Your JWT token
+      document: doc,
+      // The onSynced callback ensures initial content is set only once using editor.setContent(), preventing repetitive content loading on editor syncs.
+      onSynced() {
+        if (!doc.getMap("config").get("initialContentLoaded") && editor) {
+          doc.getMap("config").set("initialContentLoaded", true);
+
+          editor.commands.setContent(`
+          <p>This is a radically reduced version of Tiptap. It has support for a document, with paragraphs and text. That’s it. It’s probably too much for real minimalists though.</p>
+          <p>The paragraph extension is not really required, but you need at least one node. Sure, that node can be something different.</p>
+          `);
+        }
+      },
+    });
+  }, []);
   return (
-    <div className='flex flex-col justify-stretch min-h-[250px]'>
+    <>
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
-    </div>
+    </>
   );
 }
