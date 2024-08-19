@@ -5,7 +5,10 @@ import { Toggle } from "./ui/toggle";
 import {
   BoldIcon,
   Heading,
+  Heading1,
   Heading2,
+  Heading3,
+  Heading4,
   ItalicIcon,
   StrikethroughIcon,
 } from "lucide-react";
@@ -27,36 +30,84 @@ const Toolbar = ({ editor }: Props) => {
 
   return (
     <div className='border border-input bg-transparent rounded-br-none'>
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Toggle size={"sm"}>
             <Heading className='h-4 w-4' />
           </Toggle>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-          >
-            <h1 className='text-2xl'>Heading 1</h1>
+          <DropdownMenuItem>
+            <Toggle
+              size={"sm"}
+              pressed={editor.isActive("heading")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
+              }
+            >
+              <h1 className='text-[1.4rem]'>Heading 1</h1>
+            </Toggle>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-          >
-            <h2 className='text-xl'>Heading 2</h2>
+          <DropdownMenuItem>
+            <Toggle
+              size={"sm"}
+              pressed={editor.isActive("heading")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
+              }
+            >
+              <h2 className='text-[1.2rem]'>Heading 2</h2>
+            </Toggle>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-          >
-            <h3 className='text-lg'>Heading 3</h3>
+          <DropdownMenuItem>
+            <Toggle
+              size={"sm"}
+              pressed={editor.isActive("heading")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 3 }).run()
+              }
+            >
+              <h3 className='text-[1.1rem]'>Heading 3</h3>
+            </Toggle>
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> */}
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("heading", { level: 1 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 1 }).run()
+        }
+      >
+        <Heading1 className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("heading", { level: 2 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 2 }).run()
+        }
+      >
+        <Heading2 className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("heading", { level: 3 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 3 }).run()
+        }
+      >
+        <Heading3 className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("heading", { level: 4 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 4 }).run()
+        }
+      >
+        <Heading4 className='h-4 w-4' />
+      </Toggle>
       <Toggle
         size={"sm"}
         pressed={editor.isActive("bold")}
