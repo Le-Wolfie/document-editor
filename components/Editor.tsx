@@ -11,15 +11,7 @@ import { TiptapCollabProvider } from "@hocuspocus/provider";
 const APP_ID = process.env.NEXT_PUBLIC_TIPTAP_APP_ID as string;
 const TOKEN = process.env.NEXT_PUBLIC_JWT_TOKEN as string;
 
-export default function Editor({
-  content,
-  onChange,
-  document,
-}: {
-  content: string;
-  onChange: (content: string) => void;
-  document: string;
-}) {
+export default function Editor({ document }: { document: string }) {
   const doc = new Y.Doc(); // Initialize Y.Doc for shared editing
   const editor = useEditor({
     extensions: [
@@ -31,7 +23,7 @@ export default function Editor({
       }),
     ],
     immediatelyRender: false,
-    content: content,
+    content: "Enter text...",
     editorProps: {
       attributes: {
         class:
@@ -39,7 +31,6 @@ export default function Editor({
       },
     },
     onUpdate({ editor }) {
-      onChange(editor.getHTML());
       console.log(editor.getJSON());
     },
   });
@@ -55,11 +46,6 @@ export default function Editor({
       onSynced() {
         if (!doc.getMap("config").get("initialContentLoaded") && editor) {
           doc.getMap("config").set("initialContentLoaded", true);
-
-          editor.commands.setContent(`
-          <p>This is a radically reduced version of Tiptap. It has support for a document, with paragraphs and text. That’s it. It’s probably too much for real minimalists though.</p>
-          <p>The paragraph extension is not really required, but you need at least one node. Sure, that node can be something different.</p>
-          `);
         }
       },
     });
