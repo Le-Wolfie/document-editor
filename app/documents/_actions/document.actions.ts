@@ -3,6 +3,7 @@ import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import { EditorFormValues } from "../_components/EditorForm";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { DeleteDocumentFormValues } from "../_components/DeleteDocumentForm";
 
 const client = createClerkSupabaseClient();
 
@@ -81,6 +82,36 @@ export async function updateDocumentAction(content: any, title: string) {
       error: error.message,
     };
   }
+
+  return {
+    success: true,
+  };
+}
+
+export async function deleteDocumentAction(data: DeleteDocumentFormValues) {
+  const user = auth();
+
+  if (!user) {
+    return {
+      success: false,
+      error: "You must be logged in to create a document",
+    };
+  }
+
+  // Delete the document in the "documents" table
+  const { error } = await client
+    .from("documents")
+    .delete()
+    .eq("title", data.title);
+
+  if (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+
+  revalidatePath("/documents");
 
   return {
     success: true,
