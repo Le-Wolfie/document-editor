@@ -1,29 +1,33 @@
 "use client";
-
+import debounce from "lodash.debounce";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import * as Y from "yjs";
-import Collaboration from "@tiptap/extension-collaboration";
-import { useEffect } from "react";
-import { TiptapCollabProvider } from "@hocuspocus/provider";
+import { useCallback } from "react";
+import { updateDocumentAction } from "@/app/documents/_actions/document.actions";
 
-const APP_ID = process.env.NEXT_PUBLIC_TIPTAP_APP_ID as string;
-const TOKEN = process.env.NEXT_PUBLIC_JWT_TOKEN as string;
-
-export default function Editor({ document }: { document: string }) {
-  const doc = new Y.Doc(); // Initialize Y.Doc for shared editing
+export default function Editor({
+  content,
+  title,
+}: {
+  content: any;
+  title: string;
+}) {
+  const saveContent = useCallback(
+    debounce(async (content: any) => {
+      // Make API call to save content
+      await updateDocumentAction(JSON.stringify(content), title);
+    }, 4000), // 4 seconds debounce
+    []
+  );
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        history: false, // Disable history for collaboration
-      }),
-      Collaboration.configure({
-        document: doc, // Configure Y.Doc for collaboration
+        history: false,
       }),
     ],
     immediatelyRender: false,
-    content: "Enter text...",
+    content: content,
     editorProps: {
       attributes: {
         class:
@@ -31,25 +35,11 @@ export default function Editor({ document }: { document: string }) {
       },
     },
     onUpdate({ editor }) {
-      console.log(editor.getJSON());
+      const content = editor.getJSON();
+      saveContent(content);
     },
   });
 
-  // Connect to your Collaboration server
-  useEffect(() => {
-    const provider = new TiptapCollabProvider({
-      name: document, // Unique document identifier for syncing. This is your document name.
-      appId: APP_ID, // Your Cloud Dashboard AppID or `baseURL` for on-premises
-      token: TOKEN, // Your JWT token
-      document: doc,
-      // The onSynced callback ensures initial content is set only once using editor.setContent(), preventing repetitive content loading on editor syncs.
-      onSynced() {
-        if (!doc.getMap("config").get("initialContentLoaded") && editor) {
-          doc.getMap("config").set("initialContentLoaded", true);
-        }
-      },
-    });
-  }, []);
   return (
     <>
       <Toolbar editor={editor} />
