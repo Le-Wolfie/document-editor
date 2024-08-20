@@ -4,21 +4,25 @@ import { Editor } from "@tiptap/react";
 import { Toggle } from "./ui/toggle";
 import {
   BoldIcon,
-  Heading,
+  Code2,
+  Eraser,
+  FlipVertical2,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   ItalicIcon,
+  ListIcon,
+  ListOrdered,
+  MessageSquareCode,
+  Redo2,
+  Space,
   StrikethroughIcon,
+  UnderlineIcon,
+  Undo2,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+
+import { Button } from "./ui/button";
 type Props = {
   editor: Editor | null;
 };
@@ -30,48 +34,20 @@ const Toolbar = ({ editor }: Props) => {
 
   return (
     <div className='flex gap-2 mt-4 border border-input bg-transparent rounded-br-none'>
-      {/* <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Toggle size={"sm"}>
-            <Heading className='h-4 w-4' />
-          </Toggle>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>
-            <Toggle
-              size={"sm"}
-              pressed={editor.isActive("heading")}
-              onPressedChange={() =>
-                editor.chain().focus().toggleHeading({ level: 1 }).run()
-              }
-            >
-              <h1 className='text-[1.4rem]'>Heading 1</h1>
-            </Toggle>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Toggle
-              size={"sm"}
-              pressed={editor.isActive("heading")}
-              onPressedChange={() =>
-                editor.chain().focus().toggleHeading({ level: 2 }).run()
-              }
-            >
-              <h2 className='text-[1.2rem]'>Heading 2</h2>
-            </Toggle>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Toggle
-              size={"sm"}
-              pressed={editor.isActive("heading")}
-              onPressedChange={() =>
-                editor.chain().focus().toggleHeading({ level: 3 }).run()
-              }
-            >
-              <h3 className='text-[1.1rem]'>Heading 3</h3>
-            </Toggle>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu> */}
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        onClick={() => editor.chain().focus().undo().run()}
+      >
+        <Undo2 className='h-4 w-4' />
+      </Button>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        onClick={() => editor.chain().focus().redo().run()}
+      >
+        <Redo2 className='h-4 w-4' />
+      </Button>
       <Toggle
         size={"sm"}
         pressed={editor.isActive("heading", { level: 1 })}
@@ -129,6 +105,62 @@ const Toolbar = ({ editor }: Props) => {
       >
         <StrikethroughIcon className='h-4 w-4' />
       </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("blockquote")}
+        onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
+      >
+        <MessageSquareCode className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("bulletList")}
+        onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
+      >
+        <ListIcon className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("orderedList")}
+        onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
+      >
+        <ListOrdered className='h-4 w-4' />
+      </Toggle>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("codeBlock")}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
+      >
+        <Code2 className='h-4 w-4' />
+      </Toggle>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        onClick={() => editor.chain().focus().setHardBreak().run()}
+      >
+        <Space className='h-4 w-4' />
+      </Button>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <FlipVertical2 className='h-4 w-4' />
+      </Button>
+      <Toggle
+        size={"sm"}
+        pressed={editor.isActive("underline")}
+        onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
+      >
+        <UnderlineIcon className='h-4 w-4' />
+      </Toggle>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        onClick={() => editor.chain().focus().clearContent().run()}
+      >
+        <Eraser className='h-4 w-4' />
+      </Button>
     </div>
   );
 };

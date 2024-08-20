@@ -5,6 +5,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
 import { useCallback } from "react";
 import { updateDocumentAction } from "@/app/documents/_actions/document.actions";
+import Underline from "@tiptap/extension-underline";
+import History from "@tiptap/extension-history";
 
 export default function Editor({
   content,
@@ -16,6 +18,7 @@ export default function Editor({
   const saveContent = useCallback(
     debounce(async (content: any) => {
       // Make API call to save content
+      console.log("Saving content...");
       await updateDocumentAction(JSON.stringify(content), title);
     }, 4000), // 4 seconds debounce
     []
@@ -25,6 +28,8 @@ export default function Editor({
       StarterKit.configure({
         history: false,
       }),
+      Underline,
+      History,
     ],
     immediatelyRender: false,
     content: content,
