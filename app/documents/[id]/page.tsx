@@ -4,6 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import DeleteDocumentForm from "../_components/DeleteDocumentForm";
 
 declare global {
   interface Window {
@@ -20,8 +21,6 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
     .single();
   if (!data) return null;
 
- 
-
   return (
     <>
       <div className='absolute top-6 left-8'>
@@ -37,7 +36,8 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
         <h1 className='text-lg text-pretty'>{id}</h1>
         <Editor title={data.title} content={data.content} />
       </div>
-      <div className='absolute top-6 right-8'>
+      <div className='flex absolute top-6 right-8 gap-4'>
+        <DeleteDocumentForm title={data.title} />
         <UserButton />
       </div>
     </>
