@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
           )}
         >
           {children}
+          <Toaster position='bottom-right' />
         </body>
       </html>
     </ClerkProvider>
