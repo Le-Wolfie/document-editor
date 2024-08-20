@@ -1,13 +1,26 @@
 import Editor from "@/components/Editor";
-import { createClient } from "@/utils/supabase/server";
+import { createClerkSupabaseClient } from "@/utils/supabase/client";
+import { UserButton } from "@clerk/nextjs";
+
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+declare global {
+  interface Window {
+    Clerk: any;
+  }
+}
+
 const page = async ({ params: { id } }: { params: { id: string } }) => {
-  const supabase = createClient();
-  const { data } = await supabase.from("documents").select();
+  const supabase = createClerkSupabaseClient();
+  const { data } = await supabase
+    .from("documents")
+    .select("content,title")
+    .eq("title", id)
+    .single();
   if (!data) return null;
-  const document = data[0].content;
+
+ 
 
   return (
     <>
@@ -22,7 +35,10 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
       </div>
       <div className='my-2 flex flex-col w-full h-full items-center justify-center'>
         <h1 className='text-lg text-pretty'>{id}</h1>
-        <Editor content={document} />
+        <Editor title={data.title} content={data.content} />
+      </div>
+      <div className='absolute top-6 right-8'>
+        <UserButton />
       </div>
     </>
   );
