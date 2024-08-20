@@ -1,5 +1,5 @@
 import React from "react";
-import EditorForm from "./_components/EditorForm";
+import CreateDocumentForm from "./_components/CreateDocumentForm";
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -9,14 +9,13 @@ type Props = {};
 const page = async (props: Props) => {
   const supabase = createClerkSupabaseClient();
   const { data } = await supabase.from("documents").select("title");
-  console.log(data);
 
   if (!data) return null;
 
   return (
     <>
       <div className='flex justify-center flex-col items-center'>
-        <EditorForm />
+        <CreateDocumentForm />
 
         <div className='flex justify-center flex-col w-1/2 items-center gap-4 border-2 my-4'>
           <h1 className='text-pretty text-2xl'>Your Documents</h1>
