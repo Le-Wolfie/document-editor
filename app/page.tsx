@@ -1,5 +1,5 @@
-import ReactEditor from "@/components/ReactEditor";
+import { UserButton } from "@clerk/nextjs";
 
-export default async function Page() {
-  return <ReactEditor />;
+export default function Home() {
+  return <UserButton />;
 }
