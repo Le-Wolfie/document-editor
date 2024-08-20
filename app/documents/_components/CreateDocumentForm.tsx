@@ -17,20 +17,20 @@ import { createDocumentAction } from "../_actions/document.actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-const editorFormSchema = z.object({
+const createDocumentFormSchema = z.object({
   title: z.string().min(1, "Title must be at least 1 character long"),
 });
 
-export type EditorFormValues = z.infer<typeof editorFormSchema>;
+export type CreateDocumentFormValues = z.infer<typeof createDocumentFormSchema>;
 
-const EditorForm = () => {
+const CreateDocumentForm = () => {
   const router = useRouter();
-  const form = useForm<EditorFormValues>({
-    resolver: zodResolver(editorFormSchema),
+  const form = useForm<CreateDocumentFormValues>({
+    resolver: zodResolver(createDocumentFormSchema),
     defaultValues: { title: "" },
   });
 
-  const handleSubmit = async (values: EditorFormValues) => {
+  const handleSubmit = async (values: CreateDocumentFormValues) => {
     const response = await createDocumentAction(values);
     if (!response.success) {
       toast.error(response.error);
@@ -77,7 +77,7 @@ const EditorForm = () => {
   );
 };
 
-export default EditorForm;
+export default CreateDocumentForm;
 
 /**
  * <FormField
