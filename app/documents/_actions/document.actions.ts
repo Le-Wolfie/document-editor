@@ -1,13 +1,13 @@
 "use server";
 import { createClerkSupabaseClient } from "@/utils/supabase/client";
-import { EditorFormValues } from "../_components/EditorForm";
+import { CreateDocumentFormValues } from "../_components/CreateDocumentForm";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { DeleteDocumentFormValues } from "../_components/DeleteDocumentForm";
 
 const client = createClerkSupabaseClient();
 
-export async function createDocumentAction(values: EditorFormValues) {
+export async function createDocumentAction(values: CreateDocumentFormValues) {
   const user = auth();
 
   if (!user) {
