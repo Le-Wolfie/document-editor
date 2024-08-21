@@ -3,10 +3,13 @@ import debounce from "lodash.debounce";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { updateDocumentAction } from "@/app/documents/_actions/document.actions";
 import Underline from "@tiptap/extension-underline";
 import History from "@tiptap/extension-history";
+import { Check, Loader2 } from "lucide-react";
+
+type saveStatus = "saved" | "unsaved" | "saving";
 
 export default function Editor({
   content,
@@ -15,12 +18,15 @@ export default function Editor({
   content: any;
   title: string;
 }) {
+  const [saveStatus, setSaveStatus] = useState<saveStatus>("saved");
+
   const saveContent = useCallback(
     debounce(async (content: any) => {
       // Make API call to save content
-      console.log("Saving content...");
+      setSaveStatus("saving");
       await updateDocumentAction(JSON.stringify(content), title);
-    }, 4000), // 4 seconds debounce
+      setSaveStatus("saved");
+    }, 1000), // 4 seconds debounce
     []
   );
   const editor = useEditor({
@@ -40,6 +46,7 @@ export default function Editor({
       },
     },
     onUpdate({ editor }) {
+      setSaveStatus("unsaved");
       const content = editor.getJSON();
       saveContent(content);
     },
@@ -47,6 +54,25 @@ export default function Editor({
 
   return (
     <>
+      <p className="text-center text-gray-400 flex justify-center items-center gap-1">
+        {
+          saveStatus === "saving" && (
+            <Loader2 className="w-6 h-6 animate-spin" />
+          )
+        }
+        {
+          saveStatus === "saved" && (
+            <Check className="w-6 h-6 text-green-500" />
+          )
+        }
+        {
+          saveStatus === "saved"
+            ? "Saved"
+            : saveStatus === "unsaved"
+              ? "Unsaved Changes" : "Saving..."
+        }
+
+      </p>
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
     </>
