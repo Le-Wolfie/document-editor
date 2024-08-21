@@ -44,14 +44,14 @@ const CreateDocumentForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
-        <div className='flex flex-col justify-center items-center w-full gap-4'>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4 flex justify-center items-center'>
+        <div className='flex justify-center items-center w-full gap-4'>
           <FormField
             control={form.control}
             name='title'
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className='flex justify-center my-2'>
+              <FormItem className="flex justify-center items-center">
+                <FormLabel className='flex justify-center items-center my-2'>
                   Document Title
                 </FormLabel>
                 <FormControl>
