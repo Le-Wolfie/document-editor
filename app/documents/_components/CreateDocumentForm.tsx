@@ -44,14 +44,17 @@ const CreateDocumentForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4 flex justify-center items-center'>
-        <div className='flex justify-center items-center w-full gap-4'>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className='space-y-4 flex gap-4 justify-center items-center'
+      >
+        <div className='flex justify-center items-center w-full gap-2'>
           <FormField
             control={form.control}
             name='title'
             render={({ field }) => (
-              <FormItem className="flex justify-center items-center">
-                <FormLabel className='flex justify-center items-center my-2'>
+              <FormItem className='flex justify-center items-center gap-2 space-y-0'>
+                <FormLabel className='flex justify-center items-center my-2 text-nowrap'>
                   Document Title
                 </FormLabel>
                 <FormControl>
@@ -61,9 +64,6 @@ const CreateDocumentForm = () => {
               </FormItem>
             )}
           />
-        </div>
-
-        <div className='flex justify-center'>
           <Button type='submit' disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? (
               <Loader2 className='animate-spin' />
@@ -78,22 +78,3 @@ const CreateDocumentForm = () => {
 };
 
 export default CreateDocumentForm;
-
-/**
- * <FormField
-          control={form.control}
-          name='content'
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Editor
-                  content={field.value}
-                  onChange={field.onChange}
-                  document={document}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
- */

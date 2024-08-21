@@ -3,7 +3,7 @@ import debounce from "lodash.debounce";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { updateDocumentAction } from "@/app/documents/_actions/document.actions";
 import Underline from "@tiptap/extension-underline";
 import History from "@tiptap/extension-history";
@@ -26,7 +26,7 @@ export default function Editor({
       setSaveStatus("saving");
       await updateDocumentAction(JSON.stringify(content), title);
       setSaveStatus("saved");
-    }, 1000), // 4 seconds debounce
+    }, 3000), // 3 seconds debounce
     []
   );
   const editor = useEditor({
@@ -54,24 +54,16 @@ export default function Editor({
 
   return (
     <>
-      <p className="text-center text-gray-400 flex justify-center items-center gap-1">
-        {
-          saveStatus === "saving" && (
-            <Loader2 className="w-6 h-6 animate-spin" />
-          )
-        }
-        {
-          saveStatus === "saved" && (
-            <Check className="w-6 h-6 text-green-500" />
-          )
-        }
-        {
-          saveStatus === "saved"
-            ? "Saved"
-            : saveStatus === "unsaved"
-              ? "Unsaved Changes" : "Saving..."
-        }
-
+      <p className='text-center text-gray-400 flex justify-center items-center gap-1'>
+        {saveStatus === "saving" && (
+          <Loader2 className='w-6 h-6 animate-spin' />
+        )}
+        {saveStatus === "saved" && <Check className='w-6 h-6 text-green-500' />}
+        {saveStatus === "saved"
+          ? "Saved"
+          : saveStatus === "unsaved"
+          ? "Unsaved Changes"
+          : "Saving..."}
       </p>
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
