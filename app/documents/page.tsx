@@ -45,7 +45,7 @@ const page = async () => {
                     <div className='flex gap-1'>
                       <FileText className='text-blue-500' />
                       <p className='text-gray-400'>
-                        {moment(doc.created_at).fromNow()}
+                        Created {moment(doc.created_at).fromNow()}
                       </p>
                     </div>
                   </div>
