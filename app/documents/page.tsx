@@ -10,8 +10,14 @@ import Image from "next/image";
 function Logo() {
   return (
     <div className='flex justify-center items-center gap-2'>
-      <Image src='/logo-icon.svg' alt='logo' width={64} height={64} />
-      <h1 className='text-2xl font-bold'>Document Editor</h1>
+      <Image
+        src='/logo-icon.svg'
+        alt='logo'
+        width={48}
+        height={48}
+        className='w-12 h-12 lg:w-16 lg:h-16'
+      />
+      <h1 className='text-xl font-bold lg:text-2xl'>Document Editor</h1>
     </div>
   );
 }
@@ -24,15 +30,17 @@ const page = async () => {
 
   return (
     <>
-      <header className='flex justify-center items-center w-full h-28'>
-        <div className='flex justify-between items-center max-w-6xl w-full'>
+      <header className='flex justify-center items-center w-full h-20 lg:h-28'>
+        <div className='flex justify-between items-center max-w-4xl lg:max-w-6xl w-full px-4 lg:px-0'>
           <Logo />
-          <CreateDocumentForm />
-          <UserButton />
+          <div className='flex gap-2'>
+            <CreateDocumentForm />
+            <UserButton />
+          </div>
         </div>
       </header>
-      <main className='flex flex-col justify-center items-center w-full h-full'>
-        <div className='grid grid-cols-4 w-full h-full max-w-6xl gap-4'>
+      <main className='flex flex-col justify-center items-center w-full h-full mt-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full h-full max-w-4xl lg:max-w-6xl gap-4 px-4 lg:px-0'>
           {data.map((doc: any) => (
             <div key={doc.id}>
               <Link
@@ -41,10 +49,12 @@ const page = async () => {
               >
                 <div className='flex justify-between items-center w-full'>
                   <div className='flex flex-col gap-1'>
-                    <h6 className='font-bold'>{doc.title}</h6>
+                    <h6 className='font-bold text-sm lg:text-base'>
+                      {doc.title}
+                    </h6>
                     <div className='flex gap-1'>
-                      <FileText className='text-blue-500' />
-                      <p className='text-gray-400'>
+                      <FileText className='text-blue-500 w-4 h-4 lg:w-5 lg:h-5' />
+                      <p className='text-gray-400 text-xs lg:text-sm'>
                         Created {moment(doc.created_at).fromNow()}
                       </p>
                     </div>
